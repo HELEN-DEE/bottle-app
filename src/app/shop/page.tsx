@@ -2,7 +2,7 @@
 "use client"
 
 import React, {useState, useEffect} from 'react'
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingCart, Search } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
 
@@ -98,38 +98,49 @@ const ShopPage = () => {
     const filteredByCategory = searchParams.get("size") || "all";
 
     const [products, setProducts] = useState(allProducts);
+    const [search, setSearch] = useState("")
+    const [price, setPrice] = useState(0)
+    const [size, setSize] = useState("small")
     
-    useEffect(() => {
-        if (filteredByCategory === "all") {
-            setProducts(allProducts);
-        } else {
-            const filteredProducts = allProducts.filter((products) => products.category === filteredByCategory);
+    // useEffect(() => {
+    //     if (filteredByCategory === "all") {
+    //         setProducts(allProducts);
+    //     } else {
+    //         const filteredProducts = allProducts.filter((products) => products.category === filteredByCategory);
             
-            setProducts(filteredProducts);
-        }
-    }, [])
+    //         setProducts(filteredProducts);
+    //     }
+    // }, [])
 
 
     return (
         <section className='mx-5'>
         <div>
-            <h1 className='text-3xl text-center font-bold'>Bottles Haven</h1>
+            <h1 className='text-3xl text-center font-bold py-5'>Bottles Haven</h1>
         </div>
         {/* input section */}
-        <div className='flex justify-center gap-12 items-center'>
-                    <div className=' rounded-lg w-[500px] flex items-center gap-2 border border-gray-400'>
-                        <label htmlFor="" className='bg-amber-600 text-white px-4 py-2 rounded-lg'>Search</label>
-                        <input type="text" placeholder='Search for products' className='outline-none'/>
-                    </div>
-            <div>
-                <label htmlFor="">Category</label>
-                <select name="Category" id="category" className='border w-[200px]   py-1 '>
-                    {/* <option  value="small">Small</option>
-                    <option value="medium">Medium</option>
-                    <option value="large">Large</option> */}
-git add                        <option key={index} value={category.value}>{category.value}</option>
+        <div className='flex justify-center gap-4 items-center'>
+
+                        <button 
+                            
+                            className='bg-amber-600 text-white px-4 py-2 rounded-lg '>
+                            <Search/>
+                        </button>
+                        <input 
+                            type="text" 
+                            name='search-product' 
+                            placeholder='Products' 
+                            onChange={(e) => setSearch(e.target.value)}
+                            className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
+                        <input type="text" placeholder='Price' className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
+                    
+                <select name="Category" id="category" className='border w-[300px] px-4 py-3 border-gray-400 rounded-lg bg-white'>
+                    {filterCategory.map((category, index) => (
+                        <option key={index} value={category.value} className=''>{category.value}</option>
                     ))}
                 </select>
+            <div>
+                
             </div>
             
         </div>
