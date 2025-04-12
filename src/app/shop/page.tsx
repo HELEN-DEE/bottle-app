@@ -3,7 +3,7 @@
 
 import React, {useState, useEffect} from 'react'
 import { Heart, ShoppingCart, Search } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 
 
@@ -94,12 +94,15 @@ const Litre = [
 ]
 
 const ShopPage = () => {
-    const searchParams = useSearchParams();
-    const filteredByCategory = searchParams.get("size") || "all";
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    
+    
+    
 
-    const [products, setProducts] = useState(allProducts);
+    const [filteredProducts, setFilteredProducts] = useState(allProducts);
     const [search, setSearch] = useState("")
-    const [price, setPrice] = useState(0)
+    const [price, setPrice] = useState("")
     const [size, setSize] = useState("small")
     
     // useEffect(() => {
@@ -112,6 +115,19 @@ const ShopPage = () => {
     //     }
     // }, [])
 
+    const handleSearch =  () => {
+        
+    const price = searchParams.get("price") ;
+    router.push(`?search=${search}&price=${price}&category=${size}`);
+        // const priceFactor = searchParams.get("price") || 0;
+    
+        const filteredProducts = allProducts.filter((product) =>
+            product.title.toLowerCase().includes(search.toLowerCase()) && product.price <= Number(price) && product.category === size
+        );
+        setFilteredProducts(filteredProducts);
+    }
+    // || product.description.toLowerCase().includes(search)
+    
 
     return (
         <section className='mx-5'>
@@ -122,17 +138,23 @@ const ShopPage = () => {
         <div className='flex justify-center gap-4 items-center'>
 
                         <button 
-                            
+                            onClick={handleSearch}
                             className='bg-amber-600 text-white px-4 py-2 rounded-lg '>
                             <Search/>
                         </button>
                         <input 
                             type="text" 
                             name='search-product' 
+                            value={search}
                             placeholder='Products' 
                             onChange={(e) => setSearch(e.target.value)}
                             className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
-                        <input type="text" placeholder='Price' className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
+                        <input 
+                            type="text" 
+                            placeholder='Price' 
+                            onChange={(e) => setPrice((e.target.value))}
+                            value={price}
+                            className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
                     
                 <select name="Category" id="category" className='border w-[300px] px-4 py-3 border-gray-400 rounded-lg bg-white'>
                     {filterCategory.map((category, index) => (
@@ -145,7 +167,7 @@ const ShopPage = () => {
             
         </div>
         <div className='grid grid-cols-3 gap-5 p-5  '>
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
                 <ProductCard key={product.description} product={product} />
         ))} 
         </div>
@@ -164,7 +186,7 @@ const ProductCard = ({product}: {product:
         <div className='bg-white p-4 rounded-3xl w-[350px] shadow-lg flex flex-col gap-4 justify-center items-center'>
         <div className='relative'>
             <img src={product.image} alt={product.title} className='w-[350px] h-[350px] object-cover mx-auto rounded-2xl'/>
-            <button className='bg-white rounded-full p-1 absolute right-1 top-1 hover:bg-amber-600 hover:text-white transition-all duration-300'>
+            <button className='bg-white rounded-full p-1 absolute right-1 top-1 hover:text-amber-600 transition-all duration-300'>
                 <Heart size={20} />
             </button>
         </div>
@@ -184,7 +206,7 @@ const ProductCard = ({product}: {product:
             <p>{product.description.slice(0, 60)}...</p>
             {/* <p>Category: {product.category}</p> */}
             <div className='flex justify-between items-center'>
-                <p className='font-bold text-xl'> ${product.price}</p>
+                <p className='font-bold text-xl'> { `$ ${product.price}`}</p>
                 <button className='bg-amber-600 text-white px-8 py-2 rounded-full flex items-center gap-2 text-sm '>
                     <ShoppingCart size={20}/>
                     Add to Cart</button>
