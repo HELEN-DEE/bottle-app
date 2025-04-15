@@ -116,13 +116,12 @@ const ShopPage = () => {
     // }, [])
 
     const handleSearch =  () => {
-        
-    const price = searchParams.get("price") ;
+        const price = searchParams.get("price") ;
+        const numericPrice = Number(price)
     router.push(`?search=${search}&price=${price}&category=${size}`);
-        // const priceFactor = searchParams.get("price") || 0;
     
         const filteredProducts = allProducts.filter((product) =>
-            product.title.toLowerCase().includes(search.toLowerCase()) && product.price <= Number(price) && product.category === size
+            product.title.toLowerCase().includes(search.toLowerCase()) && product.price <= numericPrice && product.category === size
         );
         setFilteredProducts(filteredProducts);
     }
