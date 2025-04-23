@@ -97,28 +97,30 @@ const Litre = [
 const ShopPage = () => {
     const searchParams = useSearchParams()
     const router = useRouter()
-    
+
     
     
 
     const [filteredProducts, setFilteredProducts] = useState(allProducts);
     const [search, setSearch] = useState("")
     const [price, setPrice] = useState("")
-    const [size, setSize] = useState("small")
+    const [size, setSize] = useState("all")
     
     useEffect(() => {
         if (searchParams.toString()) {
-          router.replace("/shop");
+            router.replace("/shop");
         }
-      }, []);
+    }, []);
 
     const handleSearch =  () => {
-        // const price = searchParams.get("price") ;
+        
         const numericPrice = Number(price)
     
         
         const filteredProducts = allProducts.filter((product) =>
-            product.title.toLowerCase().includes(search.toLowerCase()) && (product.price <= numericPrice) && (size === "all" || product.category === size)
+            product.title.toLowerCase().includes(search.toLowerCase().trim()) &&
+        (price === "" || product.price <= numericPrice) &&
+        (size === "all" || product.category === size)
         
         
     );
@@ -136,38 +138,37 @@ const ShopPage = () => {
         </div>
         {/* input section */}
         <div className='flex justify-center gap-4 items-center'>
-
-                        <button 
-                            onClick={handleSearch}
-                            className='bg-amber-600 text-white px-4 py-2 rounded-lg '>
-                            <Search/>
-                        </button>
                         <input 
                             type="text" 
                             name='search-product' 
                             value={search}
                             placeholder='Products' 
                             onChange={(e) => setSearch(e.target.value)}
-                            className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
+                            className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[350px] bg-white'/>
                         <input 
                             type="text" 
                             placeholder='Price' 
                             onChange={(e) => setPrice((e.target.value))}
                             value={price}
-                            className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
+                            className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[350px] bg-white'/>
                         
                 <select 
                     name="Category" 
                     id="category" 
                     onChange={(e) => setSize(e.target.value)}
                     value={size}
-                    className='border w-[300px] px-4 py-3 border-gray-400 rounded-lg bg-white'>
+                    className='border w-[350px] px-4 py-3 border-gray-400 rounded-lg bg-white'>
                     {filterCategory.map((category, index) => (
                         <option key={index} value={category.value} className=''>{category.value}</option>
                     ))}
                 </select>
             <div>
                 
+                        <button 
+                            onClick={handleSearch}
+                            className='bg-amber-600 text-white px-4 py-2 rounded-lg '>
+                            <Search/>
+                        </button>
             </div>
             
         </div>
