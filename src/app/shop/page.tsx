@@ -132,50 +132,56 @@ const ShopPage = () => {
     
 
     return (
-        <section className='mx-5'>
+        <section className=' mx-auto px-4'>
         <div>
             <h1 className='text-3xl text-center font-bold py-5'>Bottles Haven</h1>
         </div>
         {/* input section */}
-        <div className='flex justify-center gap-4 items-center'>
-                        <input 
-                            type="text" 
-                            name='search-product' 
-                            value={search}
-                            placeholder='Products' 
-                            onChange={(e) => setSearch(e.target.value)}
-                            className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[350px] bg-white'/>
-                        <input 
-                            type="text" 
-                            placeholder='Price' 
-                            onChange={(e) => setPrice((e.target.value))}
-                            value={price}
-                            className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[350px] bg-white'/>
-                        
-                <select 
-                    name="Category" 
-                    id="category" 
-                    onChange={(e) => setSize(e.target.value)}
-                    value={size}
-                    className='border w-[350px] px-4 py-3 border-gray-400 rounded-lg bg-white'>
-                    {filterCategory.map((category, index) => (
-                        <option key={index} value={category.value} className=''>{category.value}</option>
-                    ))}
-                </select>
-            <div>
-                
-                        <button 
-                            onClick={handleSearch}
-                            className='bg-amber-600 text-white px-4 py-2 rounded-lg '>
-                            <Search/>
-                        </button>
-            </div>
+        <div className='flex justify-center gap-5 items-center'>
             
-        </div>
-        <div className='grid grid-cols-3 gap-5 p-5  '>
-            {filteredProducts.map((product) => (
-                <ProductCard key={product.description} product={product} />
-        ))} 
+                    <input 
+                        type="text" 
+                        name='search-product' 
+                        value={search}
+                        placeholder='Products' 
+                        onChange={(e) => setSearch(e.target.value)}
+                        className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
+                    <input 
+                        type="text" 
+                        placeholder='Price' 
+                        onChange={(e) => setPrice((e.target.value))}
+                        value={price}
+                        className='outline-none border border-gray-400 px-4 py-2 rounded-lg w-[300px] bg-white'/>
+                            
+                    <select 
+                        name="Category" 
+                        id="category" 
+                        onChange={(e) => setSize(e.target.value)}
+                        value={size}
+                        className='border w-[300px] px-4 py-3 border-gray-400 rounded-lg bg-white'>
+                        {filterCategory.map((category, index) => (
+                            <option key={index} value={category.value} className=''>{category.value}</option>
+                        ))}
+                    </select>
+                
+                <div>
+                    
+                            <button 
+                                onClick={handleSearch}
+                                className='bg-amber-600 text-white px-4 py-2 rounded-lg '>
+                                <Search/>
+                            </button>
+                </div>
+        
+            </div>
+
+
+        <div className='flex justify-center py-5'>
+            <div className='grid grid-cols-3 gap-8 p-5  '>
+                {filteredProducts.map((product) => (
+                    <ProductCard key={product.description} product={product} />
+            ))} 
+            </div>
         </div>
     </section>
   )
